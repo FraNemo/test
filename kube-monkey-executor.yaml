@@ -1,0 +1,22 @@
+apiVersion: executor.testkube.io/v1
+kind: Executor
+metadata:
+  name: kube-monkey-executor
+  namespace: testkube
+spec:
+  types:
+  - chaos
+  executor_type: container
+  image: ayushsobti/kube-monkey:latest
+  args:
+  - "-v=5"
+  - "-log_dir=/var/log/kube-monkey"
+  command:
+  - "/kube-monkey"
+  volumeMounts:
+    - name: config-volume
+      mountPath: "/etc/kube-monkey"
+  volumes:
+    - name: config-volume
+      configMap:
+        name: kube-monkey-config-map
